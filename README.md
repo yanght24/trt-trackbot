@@ -470,7 +470,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 ## 🎬 Demo
 
 <p align="center">
-  <video src="https://github.com/yanght24/trt-trackbot/raw/main/docs/demo.mp4" width="640" controls muted>
+https://github.com/user-attachments/assets/d8d7629f-f562-402c-99c3-31edf2e4b742
     Your browser does not support video. <a href="docs/demo.mp4">Download demo.mp4</a>
   </video>
 </p>
