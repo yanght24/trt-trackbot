@@ -469,7 +469,7 @@ trt-trackbot/
 ## 🎬 演示视频
 
 <p align="center">
-  <video src="docs/demo.mp4" width="640" controls muted>
+  <video src="https://github.com/yanght24/trt-trackbot/raw/main/docs/demo.mp4" width="640" controls muted>
     您的浏览器不支持视频播放。<a href="docs/demo.mp4">下载 demo.mp4</a>
   </video>
 </p>
