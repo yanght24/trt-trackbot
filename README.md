@@ -467,6 +467,19 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 
 ---
 
+## 🎬 Demo
+
+<p align="center">
+  <video src="https://raw.githubusercontent.com/yanght24/trt-trackbot/main/docs/demo.mp4" width="640" controls>
+    Your browser does not support video. <a href="docs/demo.mp4">Download demo.mp4</a>
+  </video>
+</p>
+
+> 📹 TurtleBot3 Waffle in Gazebo — YOLO detection + ByteTrack + FSM locking + LiDAR distance control.
+> Video: 640×360, 35 s, 7.5 MB. Source file: [`docs/demo.mp4`](docs/demo.mp4)
+
+---
+
 ## 📊 Performance
 
 > Hardware: **NVIDIA RTX 4070 Laptop GPU** · Resolution: **1920 × 1080** · 30 s steady-state recording

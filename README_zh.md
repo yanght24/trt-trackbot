@@ -466,6 +466,19 @@ trt-trackbot/
 
 ---
 
+## 🎬 演示视频
+
+<p align="center">
+  <video src="https://raw.githubusercontent.com/yanght24/trt-trackbot/main/docs/demo.mp4" width="640" controls>
+    您的浏览器不支持视频播放。<a href="docs/demo.mp4">下载 demo.mp4</a>
+  </video>
+</p>
+
+> 📹 TurtleBot3 Waffle 在 Gazebo 中运行 — YOLO 检测 + ByteTrack 追踪 + FSM 锁定 + LiDAR 距离控制。
+> 视频：640×360, 35 秒, 7.5 MB。源文件：[`docs/demo.mp4`](docs/demo.mp4)
+
+---
+
 ## 📊 性能测试
 
 > 测试环境：**NVIDIA RTX 4070 Laptop GPU** · 分辨率：**1920 × 1080** · 稳定阶段录制 30 秒
