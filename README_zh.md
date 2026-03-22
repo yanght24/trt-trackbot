@@ -470,7 +470,7 @@ trt-trackbot/
 
 <p align="center">
   <a href="docs/demo.mp4">
-    <img src="docs/demo-cover.png" width="640" alt="TRT-TrackBot 演示">
+    <img src="docs/demo.gif" width="640" alt="Demo GIF">
   </a>
 </p>
 
