@@ -1,0 +1,20 @@
+# stack.yaml — rtbot_yolo_trt_cpp v2 全栈配置
+# 集中管理 detector / tracker / debug 三个节点的参数
+
+detector_node:
+  ros__parameters:
+    engine_path: ""                     # end2end TensorRT .engine 路径（必填，launch 传入）
+    input_image_topic: image_raw        # 输入图像话题（launch 重映射）
+    detection_topic: detections         # 检测结果输出话题
+    conf_threshold: 0.3                 # 置信度阈值（end2end engine 内部 NMS 也有阈值，这里做二次过滤）
+
+tracker_node:
+  ros__parameters:
+    iou_threshold: 0.3                  # IoU 匹配阈值：低于此值不关联
+    max_age: 30                         # track 最大未匹配帧数（30 @ 30fps = 1秒）
+    min_hits: 1                         # track 最少命中次数才输出（1=立即输出，减少延迟）
+
+debug_node:
+  ros__parameters: {}
+    # debug_node 当前无额外参数
+    # 颜色由 class_id 自动生成

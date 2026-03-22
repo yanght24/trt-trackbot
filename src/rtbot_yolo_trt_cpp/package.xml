@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>rtbot_yolo_trt_cpp</name>
+  <version>0.2.0</version>
+  <description>C++ TensorRT YOLOv11 full replacement stack (detector + tracker + debug) for ROS2.</description>
+  <maintainer email="fishros@todo.todo">fishros</maintainer>
+  <license>GPL-3.0-or-later</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>yolo_msgs</depend>
+  <depend>message_filters</depend>
+
+  <!-- v2 no longer depends on yolo_ros at runtime -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

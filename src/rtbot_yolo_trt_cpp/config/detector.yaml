@@ -1,0 +1,13 @@
+# detector.yaml — V1 检测器配置 (raw-head [1,84,N] + CPU NMS)
+#
+# 仅供 detector_node_v1 使用。V2 end2end 检测器使用 stack.yaml。
+# 通过 rtbot_yolo_trt.launch.py 启动时传入参数会覆盖此处默认值。
+
+detector_node_v1:
+  ros__parameters:
+    engine_path: ""                     # TensorRT raw-head .engine 路径（必填）
+    input_image_topic: image_raw        # 输入图像话题（launch 重映射）
+    detection_topic: detections         # 检测结果输出话题
+    conf_threshold: 0.3                 # 置信度阈值
+    iou_threshold: 0.7                  # CPU NMS 的 IoU 阈值
+    max_det: 300                        # 每帧最大检测数量

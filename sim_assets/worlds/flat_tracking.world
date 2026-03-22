@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+    </plugin>
+
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+
+    <include>
+      <name>female_casual_1</name>
+      <uri>model://casual_female</uri>
+      <pose>3 0 0 0 0 1.57</pose> </include>
+
+    <include>
+      <name>fire_hydrant_1</name>
+      <uri>model://fire_hydrant</uri>
+      <pose>2 2 0 0 0 0</pose> </include>
+
+    <include>
+      <name>hatchback_blue_1</name>
+      <uri>model://hatchback_blue</uri>
+      <pose>5 -2 0 0 0 -1.57</pose> </include>
+
+    <include>
+      <name>person_walking_1</name>
+      <uri>model://person_walking</uri>
+      <pose>8 6 0 0 0 1.57</pose>
+      <static>true</static> </include>
+
+    <include>
+      <name>oak_tree_1</name>
+      <uri>model://oak_tree</uri>
+      <pose>10 3 0 0 0 0</pose> </include>
+
+    <include>
+      <name>pickup_1</name>
+      <uri>model://pickup</uri>
+      <pose>10 -3 0 0 0 0</pose> </include>
+  </world>
+</sdf>

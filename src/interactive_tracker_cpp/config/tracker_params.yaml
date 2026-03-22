@@ -1,0 +1,64 @@
+interactive_tracker:
+  ros__parameters:
+
+    # ── 话题名称 ─────────────────────────────────────────────────────────────
+    tracking_topic:      /yolo/tracking       # 订阅 YOLO 跟踪结果的话题
+    manual_cmd_topic:    /manual_cmd_vel      # 订阅键盘手动速度指令的话题
+    user_command_topic:  /user_command        # 订阅用户锁定/解锁命令的话题
+    cmd_vel_topic:       /cmd_vel             # 发布最终速度指令的话题
+    image_topic:         /yolo/dbg_image      # 订阅用于叠加槽位号的图像话题（含 YOLO 框）
+    scan_topic:          /scan                # 订阅 2D LiDAR LaserScan 的话题
+
+    # ── 图像参数 ──────────────────────────────────────────────────────────────
+    image_center_x:      960.0                # 图像中心横坐标（像素），通常为 image_width / 2
+    image_width:         1920.0               # 图像宽度（像素），用于角度换算，勿写死
+    horizontal_fov_rad:  1.5708               # 相机水平视场角（rad），π/2 ≈ 90°，请按实际标定值修改
+
+    # ── 转向（偏航）控制 ──────────────────────────────────────────────────────
+    yaw_kp:              0.001                # 转向比例增益，值越大转向越激进越容易振荡
+    yaw_deadband_px:     50.0                 # 转向死区宽度（像素），目标在此范围内不输出转向
+    center_x_alpha:      0.5                  # 目标中心 x 坐标 EMA 系数，越小越平滑但响应越慢
+    angular_z_alpha:     0.7                  # 转向输出 EMA 系数，越大越接近原始值响应越快
+    max_angular_z:       0.6                  # 最大转向角速度（rad/s），限制最快转向速度
+
+    # ── 线速度上限 ────────────────────────────────────────────────────────────
+    max_linear_x:        0.20                 # 最大前进速度（m/s），控制靠近目标的最快速度
+    max_reverse_x:       0.08                 # 最大后退速度（m/s），allow_reverse 为 true 时生效
+    allow_reverse:       true                 # 是否允许后退远离目标，true 时目标过近会自动后退
+
+    # ── 前进迟滞门控（基于像素偏转误差）────────────────────────────────────
+    forward_gate_open_px:  120.0              # 转向误差低于此值时开启前进许可（像素）
+    forward_gate_close_px: 220.0              # 转向误差高于此值时关闭前进许可（像素）
+
+    # ── LiDAR 融合距离控制（主控）────────────────────────────────────────────
+    use_lidar_distance:       true            # 是否启用 LiDAR 真实距离控制，false 则仅用 bbox 高度
+    desired_distance_m:       1.2             # 期望与目标保持的距离（米）
+    distance_kp:              0.6             # 距离比例增益，值越大靠近/远离动作越激进
+    distance_deadband_m:      0.10            # 距离死区（米），在此范围内不输出前进指令
+    lidar_angle_window_scale: 1.0             # bbox 角宽的缩放倍数，用于扩大/缩小 LiDAR 采样扇区
+    lidar_min_window_rad:     0.05            # LiDAR 采样扇区最小半角（rad），防止小目标采样为零
+    lidar_max_distance_m:     8.0             # 过滤掉超过此距离的 LiDAR 点（米），排除远处干扰
+    camera_lidar_yaw_offset_rad: 0.0          # 相机到 LiDAR 的偏航安装偏差（rad），测距总偏一侧时调此值
+    lidar_min_valid_points:   3               # ROI 内有效点数少于此值时不信任读数，返回无效
+    distance_filter_window:   5               # 时间滤波滑动窗口长度（帧数），中位数后做 EMA
+    distance_ema_alpha:       0.4             # 距离 EMA 系数，越小越平滑但响应越慢
+
+    # ── bbox 高度距离控制（LiDAR 无效时的备用方案）──────────────────────────
+    use_bbox_height_fallback: true            # LiDAR 无有效读数时是否回退到 bbox 高度控制
+    linear_kp:                0.0020          # bbox 高度控制的比例增益
+    target_height_desired:    300.0           # 期望 bbox 高度（像素），决定基于图像的保持距离
+    bbox_height_deadband:     25.0            # bbox 高度死区（像素），在此范围内不输出前进指令
+
+    # ── 目标丢失与重识别 ──────────────────────────────────────────────────────
+    target_lost_timeout_sec:  1.0            # 目标消失超过此时间后切换到搜索模式（秒）
+    slot_release_timeout_sec: 2.0             # 目标消失超过此时间后释放槽位号（秒）
+    max_reacquire_dist_px:    300.0           # 同类别目标重识别的最大像素距离，超出则不接管
+
+    # ── 搜索模式 ──────────────────────────────────────────────────────────────
+    search_angular_z:    0.40                 # 搜索模式下原地旋转的角速度（rad/s）
+
+    # ── 手动控制 ──────────────────────────────────────────────────────────────
+    manual_cmd_timeout_sec: 0.25              # 手动速度指令超时时间，超时后停车（秒）
+
+    # ── 控制循环 ──────────────────────────────────────────────────────────────
+    control_rate_hz:     20.0                 # 主控制循环频率（Hz），决定 cmd_vel 发布速率

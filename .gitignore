@@ -1,0 +1,40 @@
+# ROS 2 build & install directories
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# AI Models and TensorRT Artifacts (CRITICAL - large binary files)
+*.engine
+*.onnx
+*.pt
+*.pth
+*.weights
+*.trt
+
+# ROS Data records
+*.bag
+*.db3
+
+# Benchmark output caches (raw data - regenerate locally)
+benchmarks/*/benchmark.json
+benchmarks/*/plots/
+
+# Planning files (local workflow)
+task_plan.md
+findings.md
+progress.md
+
+# OS artifacts
+.DS_Store
+Thumbs.db
