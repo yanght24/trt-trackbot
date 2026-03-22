@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/ROS2-Humble-blue?logo=ros" alt="ROS2"/>
     <img src="https://img.shields.io/badge/TensorRT-8.6%2B-green?logo=nvidia" alt="TensorRT"/>
     <img src="https://img.shields.io/badge/CUDA-12.x-green?logo=nvidia" alt="CUDA"/>
-    <img src="https://img.shields.io/badge/C%2B%2B-17-orange?logo=cplusplus" alt="C++17"/>
+    <img src="https://img.shields.io/badge/C%2B%2B-20-orange?logo=cplusplus" alt="C++20"/>
     <img src="https://img.shields.io/badge/License-GPL--3.0-red" alt="License"/>
     <img src="https://img.shields.io/github/stars/yanght24/trt-trackbot?style=social" alt="Stars"/>
   </p>
@@ -25,6 +25,10 @@
 > **trt-trackbot** = TensorRT end2end detector (CPU-NMS-free) + C++ ByteTrack + FSM controller + LiDAR distance control
 >
 > Full GPU pipeline: `/camera/image_raw` → letterbox → TRT infer → EfficientNMS → ByteTrack → FSM → `/cmd_vel`
+
+**trt-trackbot** is a ROS 2 robotics project that demonstrates how to build a real-time, interactive multi-object tracking system on a GPU-accelerated embedded/laptop platform. It is designed for researchers and engineers who want a **reproducible, benchmarkable baseline** for visual tracking on TurtleBot3 — from raw camera input all the way to closed-loop motor control.
+
+The project evolved through three detection backends (Python TRT → C++ TRT v1 → C++ TRT v2 end2end), each with recorded benchmarks, so you can study the latency and power trade-offs of each optimization step. The controller supports keyboard-driven target locking, LiDAR-based distance regulation, and EMA-filtered yaw control — all in a single C++ node.
 
 ## ✨ Features
 
@@ -44,11 +48,11 @@
 
 > Hardware: **NVIDIA RTX 4070 Laptop GPU** · Resolution: **1920 × 1080** · 30 s steady-state recording
 
-| | Backend | Mean FPS | Mean Latency | GPU Power | GPU Util |
-|:-:|:--------|:--------:|:------------:|:---------:|:--------:|
-| ❌ | Python TRT *(baseline)* | 27.8 | 29.0 ms | 43.5 W | 41% |
-| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% |
-| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** |
+| | Backend | Mean FPS | Mean Latency | GPU Power | GPU Util | vs Baseline |
+|:-:|:--------|:--------:|:------------:|:---------:|:--------:|:-----------:|
+| ❌ | Python TRT *(baseline)* | 27.8 | 29.0 ms | 43.5 W | 41% | — |
+| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% | latency **−70%** |
+| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** | latency **−92%**, power **−41%** |
 
 > 🚀 v2 end2end moves all NMS inside TensorRT via `EfficientNMS_TRT` — zero CPU postprocessing.
 > **12× faster than Python · 3.6× faster than C++ v1**
@@ -65,12 +69,6 @@ python3 docs/benchmark_chart.py
 # → docs/benchmark_latency.png
 ```
 </details>
-
----
-
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yanght24/trt-trackbot&type=Date)](https://star-history.com/#yanght24/trt-trackbot&Date)
 
 ---
 
@@ -536,6 +534,12 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 | [OpenCV](https://github.com/opencv/opencv) | Apache-2.0 | Image preprocessing & overlay |
 | [TensorRT](https://developer.nvidia.com/tensorrt) | NVIDIA SLA | GPU inference runtime |
 | ROS 2 Humble / rclcpp | Apache-2.0 | Robotics middleware |
+
+---
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=yanght24/trt-trackbot&type=Date)](https://star-history.com/#yanght24/trt-trackbot&Date)
 
 ---
 

@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/ROS2-Humble-blue?logo=ros" alt="ROS2"/>
     <img src="https://img.shields.io/badge/TensorRT-8.6%2B-green?logo=nvidia" alt="TensorRT"/>
     <img src="https://img.shields.io/badge/CUDA-12.x-green?logo=nvidia" alt="CUDA"/>
-    <img src="https://img.shields.io/badge/C%2B%2B-17-orange?logo=cplusplus" alt="C++17"/>
+    <img src="https://img.shields.io/badge/C%2B%2B-20-orange?logo=cplusplus" alt="C++20"/>
     <img src="https://img.shields.io/badge/License-GPL--3.0-red" alt="License"/>
     <img src="https://img.shields.io/github/stars/yanght24/trt-trackbot?style=social" alt="Stars"/>
   </p>
@@ -25,6 +25,10 @@
 > **trt-trackbot** = TensorRT end2end 检测器（无 CPU NMS）+ C++ ByteTrack + FSM 控制器 + LiDAR 距离控制
 >
 > 完整 GPU 管线：`/camera/image_raw` → letterbox → TRT 推理 → EfficientNMS → ByteTrack → FSM → `/cmd_vel`
+
+**trt-trackbot** 是一个 ROS 2 机器人项目，展示了如何在 GPU 加速的笔记本/嵌入式平台上构建实时、可交互的多目标跟踪系统。它面向希望在 TurtleBot3 上获得**可复现、可基准测试的视觉跟踪基线**的研究者和工程师——从原始摄像头输入到闭环电机控制的完整链路。
+
+项目经历了三个检测后端的演进（Python TRT → C++ TRT v1 → C++ TRT v2 end2end），每个阶段都附有录制的基准数据，你可以清晰地研究各优化步骤的延迟和功耗权衡。控制器支持键盘驱动的目标锁定、LiDAR 距离调节和 EMA 滤波的偏航控制——全部集成在单个 C++ 节点中。
 
 ## ✨ 功能特性
 
@@ -44,11 +48,11 @@
 
 > 测试环境：**NVIDIA RTX 4070 Laptop GPU** · 分辨率：**1920 × 1080** · 稳定阶段录制 30 秒
 
-| | 后端 | 平均 FPS | 平均延迟 | GPU 功耗 | GPU 利用率 |
-|:-:|:-----|:-------:|:-------:|:-------:|:---------:|
-| ❌ | Python TRT *(基线)* | 27.8 | 29.0 ms | 43.5 W | 41% |
-| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% |
-| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** |
+| | 后端 | 平均 FPS | 平均延迟 | GPU 功耗 | GPU 利用率 | 相比基线 |
+|:-:|:-----|:-------:|:-------:|:-------:|:---------:|:-------:|
+| ❌ | Python TRT *(基线)* | 27.8 | 29.0 ms | 43.5 W | 41% | — |
+| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% | 延迟 **−70%** |
+| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** | 延迟 **−92%**，功耗 **−41%** |
 
 > 🚀 v2 end2end 将全部 NMS 移入 TensorRT（`EfficientNMS_TRT`），CPU 零后处理。
 > **相比 Python 快 12× · 相比 C++ v1 快 3.6×**
@@ -65,12 +69,6 @@ python3 docs/benchmark_chart.py
 # → docs/benchmark_latency.png
 ```
 </details>
-
----
-
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yanght24/trt-trackbot&type=Date)](https://star-history.com/#yanght24/trt-trackbot&Date)
 
 ---
 
@@ -535,6 +533,12 @@ trt-trackbot/
 | [OpenCV](https://github.com/opencv/opencv) | Apache-2.0 | 图像预处理与叠加绘制 |
 | [TensorRT](https://developer.nvidia.com/tensorrt) | NVIDIA SLA | GPU 推理运行时 |
 | ROS 2 Humble / rclcpp | Apache-2.0 | 机器人中间件 |
+
+---
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=yanght24/trt-trackbot&type=Date)](https://star-history.com/#yanght24/trt-trackbot&Date)
 
 ---
 

@@ -40,16 +40,27 @@ fps_vals = [records[s[0]]['det_fps_mean'] for s in SERIES if s[0] in records]
 lat_vals = [records[s[0]]['det_latency_mean_ms'] for s in SERIES if s[0] in records]
 
 colors = ['#4C72B0', '#55A868', '#C44E52']
+markers = ['o', 's', 'D']
 
-# ── FPS chart ────────────────────────────────────────────────────────────────
+# ── FPS chart — line chart, zoomed y-axis to show differences clearly ────────
+x = list(range(len(labels)))
 fig, ax = plt.subplots(figsize=(8, 5))
-bars = ax.bar(labels, fps_vals, color=colors, width=0.5, edgecolor='white', linewidth=0.8)
-ax.bar_label(bars, fmt='%.1f fps', padding=4, fontsize=11, fontweight='bold')
+ax.plot(x, fps_vals, color='#4C72B0', linewidth=2.5, marker='o', markersize=8,
+        markerfacecolor='white', markeredgewidth=2.5, zorder=3)
+for i, (xi, yi, c) in enumerate(zip(x, fps_vals, colors)):
+    ax.plot(xi, yi, marker=markers[i], markersize=13, color=c, zorder=4)
+    ax.annotate(f'{yi:.1f} fps', xy=(xi, yi), xytext=(0, 14),
+                textcoords='offset points', ha='center', fontsize=11,
+                fontweight='bold', color=c)
+ax.set_xticks(x)
+ax.set_xticklabels(labels, fontsize=10)
 ax.set_ylabel('Frames per Second (fps)', fontsize=12)
 ax.set_title('YOLO Detection Throughput — Python vs C++ TRT\n(RTX 4070 Laptop, 1920×1080)', fontsize=13)
-ax.set_ylim(0, max(fps_vals) * 1.25)
-ax.yaxis.set_major_locator(ticker.MultipleLocator(20))
-ax.grid(axis='y', linestyle='--', alpha=0.5)
+fps_min, fps_max = min(fps_vals), max(fps_vals)
+margin = (fps_max - fps_min) * 0.8
+ax.set_ylim(fps_min - margin, fps_max + margin * 2)
+ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
+ax.grid(axis='y', linestyle='--', alpha=0.4)
 ax.spines[['top', 'right']].set_visible(False)
 plt.tight_layout()
 fig.savefig(BENCH_DIR.parent / 'docs' / 'benchmark_fps.png', dpi=150)
