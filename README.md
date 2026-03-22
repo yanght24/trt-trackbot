@@ -468,6 +468,9 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 ---
 
 ## 🎬 Demo
+The demo illustrates the full target-following workflow with three states: **Manual**, **Locked**, and **Searching**.
+
+At the beginning, the robot operates in **Manual** mode, where the view is rotated manually to select the target. After selection, the system enters **Locked** mode and continuously tracks the person. When the target is temporarily occluded by the tree, the system switches to **Searching** mode and rotates to re-acquire the lost target. Once the person is detected again, it returns to **Locked** mode and resumes stable tracking.
 
 <p align="center">
   <a href="docs/demo.mp4">
