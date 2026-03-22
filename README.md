@@ -470,13 +470,14 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 ## 🎬 Demo
 
 <p align="center">
-https://github.com/user-attachments/assets/d8d7629f-f562-402c-99c3-31edf2e4b742
-    Your browser does not support video. <a href="docs/demo.mp4">Download demo.mp4</a>
-  </video>
+  <a href="docs/demo.mp4">
+    <img src="docs/demo-cover.png" width="640" alt="TRT-TrackBot Demo">
+  </a>
 </p>
 
-> 📹 TurtleBot3 Waffle in Gazebo — YOLO detection + ByteTrack + FSM locking + LiDAR distance control.
-> Video: 640×360, 35 s, 7.5 MB. Source file: [`docs/demo.mp4`](docs/demo.mp4)
+<p align="center">
+  Click the preview image to watch or download the full demo video.
+</p>
 
 ---
 
