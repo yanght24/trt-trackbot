@@ -467,6 +467,9 @@ trt-trackbot/
 ---
 
 ## 🎬 演示视频
+该演示视频展示了系统在 **Manual / Locked / Searching** 三种模式之间的完整切换流程。
+
+开始阶段为 **Manual** 模式，通过手动旋转视角完成目标选择；选中目标后，系统进入 **Locked** 模式并持续跟踪行人。当目标被树木暂时遮挡后，系统切换到 **Searching** 模式，通过旋转主动重新搜索目标；当目标再次被检测到后，系统重新进入 **Locked** 模式并继续稳定跟踪。
 
 <p align="center">
   <a href="docs/demo.mp4">
