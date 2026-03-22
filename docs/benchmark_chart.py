@@ -36,8 +36,8 @@ SERIES = [
 ]
 
 labels   = [s[1] for s in SERIES if s[0] in records]
-fps_vals = [records[s[0]]['fps']['mean'] for s in SERIES if s[0] in records]
-lat_vals = [records[s[0]]['latency_ms']['mean'] for s in SERIES if s[0] in records]
+fps_vals = [records[s[0]]['det_fps_mean'] for s in SERIES if s[0] in records]
+lat_vals = [records[s[0]]['det_latency_mean_ms'] for s in SERIES if s[0] in records]
 
 colors = ['#4C72B0', '#55A868', '#C44E52']
 
