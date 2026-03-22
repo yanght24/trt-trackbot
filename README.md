@@ -44,76 +44,6 @@ The project evolved through three detection backends (Python TRT → C++ TRT v1 
 
 ---
 
-## 📊 Performance
-
-> Hardware: **NVIDIA RTX 4070 Laptop GPU** · Resolution: **1920 × 1080** · 30 s steady-state recording
-
-| | Backend | Mean FPS | Mean Latency | GPU Power | GPU Util | vs Baseline |
-|:-:|:--------|:--------:|:------------:|:---------:|:--------:|:-----------:|
-| ❌ | Python TRT *(baseline)* | 27.8 | 29.0 ms | 43.5 W | 41% | — |
-| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% | latency **−70%** |
-| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** | latency **−92%**, power **−41%** |
-
-> 🚀 v2 end2end moves all NMS inside TensorRT via `EfficientNMS_TRT` — zero CPU postprocessing.
-> **12× faster than Python · 3.6× faster than C++ v1**
-
-![FPS Comparison](docs/benchmark_fps.png)
-![Latency Comparison](docs/benchmark_latency.png)
-
-<details>
-<summary>Reproduce benchmark charts</summary>
-
-```bash
-python3 docs/benchmark_chart.py
-# → docs/benchmark_fps.png
-# → docs/benchmark_latency.png
-```
-</details>
-
----
-
-## 🏗️ Architecture
-
-```
-/camera/image_raw  ──────────────────────────────────────────┐
-                                                             │
-        ▼                                                    │
-┌────────────────────────────────────────────────┐          │
-│  rtbot_yolo_trt_cpp                            │          │
-│                                                │          │
-│  ┌─────────────────────────────────────────┐  │          │
-│  │ DetectorNode  (TRT end2end FP16)        │  │          │
-│  │  GPU: letterbox → infer → EfficientNMS  │  │          │
-│  │  → /yolo/detections                     │  │          │
-│  └─────────────────────────────────────────┘  │          │
-│                     │                          │          │
-│  ┌─────────────────────────────────────────┐  │          │
-│  │ TrackerNode  (ByteTrack C++)            │  │          │
-│  │  → /yolo/tracking  (stable IDs)        │  │          │
-│  └─────────────────────────────────────────┘  │          │
-└────────────────────────────────────────────────┘          │
-         │                                      /scan ───────┘
-         ▼                                         │
-┌────────────────────────────────────────────────────────────┐
-│  interactive_tracker_cpp  —  TrackerManagerNode            │
-│                                                            │
-│  FSM:  Manual  ←──────→  Locked  ←──────→  Searching      │
-│                                                            │
-│  • Slot mapping:  ByteTrack ID → slots 1–9                 │
-│  • LiDAR PD control:  20th-pct ROI distance → linear.x    │
-│  • EMA yaw filter + deadband hysteresis                    │
-│  • Soft forward scaling: speed ∝ (1 − |error| / tol)      │
-│                                                            │
-│  Publishes:  /cmd_vel  ·  /tracker/overlay_image           │
-│              /tracker/target_list  ·  /tracker/target_distance │
-└────────────────────────────────────────────────────────────┘
-         │
-         ▼
-   TurtleBot3 Waffle  →  /cmd_vel
-```
-
----
-
 ## 🔧 Prerequisites
 
 | Component | Version | Notes |
@@ -534,6 +464,34 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 | [OpenCV](https://github.com/opencv/opencv) | Apache-2.0 | Image preprocessing & overlay |
 | [TensorRT](https://developer.nvidia.com/tensorrt) | NVIDIA SLA | GPU inference runtime |
 | ROS 2 Humble / rclcpp | Apache-2.0 | Robotics middleware |
+
+---
+
+## 📊 Performance
+
+> Hardware: **NVIDIA RTX 4070 Laptop GPU** · Resolution: **1920 × 1080** · 30 s steady-state recording
+
+| | Backend | Mean FPS | Mean Latency | GPU Power | GPU Util | vs Baseline |
+|:-:|:--------|:--------:|:------------:|:---------:|:--------:|:-----------:|
+| ❌ | Python TRT *(baseline)* | 27.8 | 29.0 ms | 43.5 W | 41% | — |
+| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% | latency **−70%** |
+| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** | latency **−92%**, power **−41%** |
+
+> 🚀 v2 end2end moves all NMS inside TensorRT via `EfficientNMS_TRT` — zero CPU postprocessing.
+> **12× faster than Python · 3.6× faster than C++ v1**
+
+![FPS Comparison](docs/benchmark_fps.png)
+![Latency Comparison](docs/benchmark_latency.png)
+
+<details>
+<summary>Reproduce benchmark charts</summary>
+
+```bash
+python3 docs/benchmark_chart.py
+# → docs/benchmark_fps.png
+# → docs/benchmark_latency.png
+```
+</details>
 
 ---
 

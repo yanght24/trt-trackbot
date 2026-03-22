@@ -44,76 +44,6 @@
 
 ---
 
-## 📊 性能测试
-
-> 测试环境：**NVIDIA RTX 4070 Laptop GPU** · 分辨率：**1920 × 1080** · 稳定阶段录制 30 秒
-
-| | 后端 | 平均 FPS | 平均延迟 | GPU 功耗 | GPU 利用率 | 相比基线 |
-|:-:|:-----|:-------:|:-------:|:-------:|:---------:|:-------:|
-| ❌ | Python TRT *(基线)* | 27.8 | 29.0 ms | 43.5 W | 41% | — |
-| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% | 延迟 **−70%** |
-| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** | 延迟 **−92%**，功耗 **−41%** |
-
-> 🚀 v2 end2end 将全部 NMS 移入 TensorRT（`EfficientNMS_TRT`），CPU 零后处理。
-> **相比 Python 快 12× · 相比 C++ v1 快 3.6×**
-
-![FPS 对比](docs/benchmark_fps.png)
-![延迟对比](docs/benchmark_latency.png)
-
-<details>
-<summary>重新生成性能对比图</summary>
-
-```bash
-python3 docs/benchmark_chart.py
-# → docs/benchmark_fps.png
-# → docs/benchmark_latency.png
-```
-</details>
-
----
-
-## 🏗️ 系统架构
-
-```
-/camera/image_raw  ──────────────────────────────────────────┐
-                                                             │
-        ▼                                                    │
-┌────────────────────────────────────────────────┐          │
-│  rtbot_yolo_trt_cpp                            │          │
-│                                                │          │
-│  ┌─────────────────────────────────────────┐  │          │
-│  │ DetectorNode（TRT end2end FP16）        │  │          │
-│  │  GPU: letterbox → 推理 → EfficientNMS   │  │          │
-│  │  → /yolo/detections                     │  │          │
-│  └─────────────────────────────────────────┘  │          │
-│                     │                          │          │
-│  ┌─────────────────────────────────────────┐  │          │
-│  │ TrackerNode（ByteTrack C++）            │  │          │
-│  │  → /yolo/tracking（稳定 ID）           │  │          │
-│  └─────────────────────────────────────────┘  │          │
-└────────────────────────────────────────────────┘          │
-         │                                     /scan ────────┘
-         ▼                                         │
-┌────────────────────────────────────────────────────────────┐
-│  interactive_tracker_cpp  —  TrackerManagerNode            │
-│                                                            │
-│  FSM:  Manual  ←──────→  Locked  ←──────→  Searching      │
-│                                                            │
-│  • 槽位映射：ByteTrack ID → 1–9 槽位                      │
-│  • LiDAR PD 控制：20th 百分位 ROI 距离 → linear.x         │
-│  • EMA 偏航滤波 + 迟滞死区                                 │
-│  • 软衰减前进：速度 ∝ (1 − |误差| / 容忍度)               │
-│                                                            │
-│  发布：/cmd_vel  ·  /tracker/overlay_image                 │
-│        /tracker/target_list  ·  /tracker/target_distance   │
-└────────────────────────────────────────────────────────────┘
-         │
-         ▼
-   TurtleBot3 Waffle  →  /cmd_vel
-```
-
----
-
 ## 🔧 环境要求
 
 | 组件 | 版本 | 说明 |
@@ -533,6 +463,34 @@ trt-trackbot/
 | [OpenCV](https://github.com/opencv/opencv) | Apache-2.0 | 图像预处理与叠加绘制 |
 | [TensorRT](https://developer.nvidia.com/tensorrt) | NVIDIA SLA | GPU 推理运行时 |
 | ROS 2 Humble / rclcpp | Apache-2.0 | 机器人中间件 |
+
+---
+
+## 📊 性能测试
+
+> 测试环境：**NVIDIA RTX 4070 Laptop GPU** · 分辨率：**1920 × 1080** · 稳定阶段录制 30 秒
+
+| | 后端 | 平均 FPS | 平均延迟 | GPU 功耗 | GPU 利用率 | 相比基线 |
+|:-:|:-----|:-------:|:-------:|:-------:|:---------:|:-------:|
+| ❌ | Python TRT *(基线)* | 27.8 | 29.0 ms | 43.5 W | 41% | — |
+| 🟡 | C++ TRT v1 *(raw-head)* | 29.5 | 8.6 ms | 26.1 W | 30% | 延迟 **−70%** |
+| ✅ | **C++ TRT v2 *(end2end)*** | **29.7** | **2.4 ms** | **25.8 W** | **26%** | 延迟 **−92%**，功耗 **−41%** |
+
+> 🚀 v2 end2end 将全部 NMS 移入 TensorRT（`EfficientNMS_TRT`），CPU 零后处理。
+> **相比 Python 快 12× · 相比 C++ v1 快 3.6×**
+
+![FPS 对比](docs/benchmark_fps.png)
+![延迟对比](docs/benchmark_latency.png)
+
+<details>
+<summary>重新生成性能对比图</summary>
+
+```bash
+python3 docs/benchmark_chart.py
+# → docs/benchmark_fps.png
+# → docs/benchmark_latency.png
+```
+</details>
 
 ---
 
