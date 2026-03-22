@@ -471,7 +471,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 
 <p align="center">
   <a href="docs/demo.mp4">
-    <img src="docs/demo-cover.png" width="640" alt="TRT-TrackBot Demo">
+    <img src="docs/demo.gif" width="640" alt="Demo GIF">
   </a>
 </p>
 
