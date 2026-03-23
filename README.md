@@ -459,9 +459,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full attribution.
 | Library | License | Usage |
 |---------|:-------:|-------|
 | [yolo_ros](https://github.com/mgonzs13/yolo_ros) | GPL-3.0 | `yolo_msgs` message definitions |
-| [ByteTrack](https://github.com/ifzhang/ByteTrack) | MIT | Multi-object tracking algorithm |
-| [TurtleBot3](https://github.com/ROBOTIS-GIT/turtlebot3) | Apache-2.0 | Robot simulation platform |
-| [OpenCV](https://github.com/opencv/opencv) | Apache-2.0 | Image preprocessing & overlay |
+| [TurtleBot3](https://github.com/ROBOTIS-GIT/turtlebot3) | Apache-2.0 | Robot simulation |
 | [TensorRT](https://developer.nvidia.com/tensorrt) | NVIDIA SLA | GPU inference runtime |
 | ROS 2 Humble / rclcpp | Apache-2.0 | Robotics middleware |
 
