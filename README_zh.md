@@ -458,9 +458,7 @@ trt-trackbot/
 | 库 | 许可证 | 用途 |
 |----|:------:|------|
 | [yolo_ros](https://github.com/mgonzs13/yolo_ros) | GPL-3.0 | `yolo_msgs` 消息定义 |
-| [ByteTrack](https://github.com/ifzhang/ByteTrack) | MIT | 多目标追踪算法 |
-| [TurtleBot3](https://github.com/ROBOTIS-GIT/turtlebot3) | Apache-2.0 | 机器人仿真平台 |
-| [OpenCV](https://github.com/opencv/opencv) | Apache-2.0 | 图像预处理与叠加绘制 |
+| [TurtleBot3](https://github.com/ROBOTIS-GIT/turtlebot3) | Apache-2.0 | 机器人仿真 |
 | [TensorRT](https://developer.nvidia.com/tensorrt) | NVIDIA SLA | GPU 推理运行时 |
 | ROS 2 Humble / rclcpp | Apache-2.0 | 机器人中间件 |
 
